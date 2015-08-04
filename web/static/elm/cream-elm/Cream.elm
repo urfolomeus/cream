@@ -67,24 +67,24 @@ port requests =
     |> Signal.map (\task -> Task.toResult task `andThen` Signal.send results.address)
 
 
-lookupZipCode : String -> Task String (List String)
-lookupZipCode query =
-  let toUrl =
-        if String.length query == 5 && String.all Char.isDigit query
-          then succeed ("http://api.zippopotam.us/us/" ++ query)
-          else fail "Give me a valid US zip code!"
-  in
-      toUrl `andThen` (mapError (always "Not found :(") << Http.get places)
+--lookupZipCode : String -> Task String (List String)
+--lookupZipCode query =
+--  let toUrl =
+--        if String.length query == 5 && String.all Char.isDigit query
+--          then succeed ("http://api.zippopotam.us/us/" ++ query)
+--          else fail "Give me a valid US zip code!"
+--  in
+--      toUrl `andThen` (mapError (always "Not found :(") << Http.get places)
 
 
-places : Json.Decoder (List String)
-places =
-  let place =
-        Json.object2 (\city state -> city ++ ", " ++ state)
-          ("place name" := Json.string)
-          ("state" := Json.string)
-  in
-      "places" := Json.list place
+--places : Json.Decoder (List String)
+--places =
+--  let place =
+--        Json.object2 (\city state -> city ++ ", " ++ state)
+--          ("place name" := Json.string)
+--          ("state" := Json.string)
+--  in
+--      "places" := Json.list place
 
 
 lookupContact : String -> Task String (List String)
@@ -100,7 +100,7 @@ lookupContact query =
 contacts : Json.Decoder (List String)
 contacts =
   let contact =
-        Json.object3 (\first_name last_name email -> first_name ++ " " ++ last_name ++ " (" ++ email ++ ")")
+        Json.object3 (\first_name last_name email -> first_name ++ " " ++ last_name ++ " : " ++ email ++ "")
           ("first_name" := Json.string)
           ("last_name" := Json.string)
           ("email" := Json.string)

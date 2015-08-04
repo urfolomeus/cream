@@ -34,10 +34,10 @@ Elm.Cream.make = function (_elm) {
          A2($Basics._op["++"],
          last_name,
          A2($Basics._op["++"],
-         " (",
+         " : ",
          A2($Basics._op["++"],
          email,
-         ")")))));
+         "")))));
       }),
       A2($Json$Decode._op[":="],
       "first_name",

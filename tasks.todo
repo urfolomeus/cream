@@ -3,5 +3,6 @@ Tasks:
   ✔ add some sample data @done (15-08-04 09:58)
   ✔ build simple Elm app that fetches the data and displays it @done (15-08-04 11:38)
   ✔ hook the apps together @done (15-08-04 11:38)
-  ☐ get Elm working with Brunch
+  ✔ get Elm js file serving with Brunch @done (15-08-04 16:20)
+  ☐ get Elm js file building with Brunch
 
