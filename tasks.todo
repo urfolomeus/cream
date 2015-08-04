@@ -1,0 +1,7 @@
+Tasks:
+  ✔ build simple JSON endpoint that servers data @done (15-08-04 09:58)
+  ✔ add some sample data @done (15-08-04 09:58)
+  ✔ build simple Elm app that fetches the data and displays it @done (15-08-04 11:38)
+  ✔ hook the apps together @done (15-08-04 11:38)
+  ☐ get Elm working with Brunch
+

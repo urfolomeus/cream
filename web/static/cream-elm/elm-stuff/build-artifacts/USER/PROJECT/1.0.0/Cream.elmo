@@ -1,0 +1,174 @@
+Elm.Cream = Elm.Cream || {};
+Elm.Cream.make = function (_elm) {
+   "use strict";
+   _elm.Cream = _elm.Cream || {};
+   if (_elm.Cream.values)
+   return _elm.Cream.values;
+   var _op = {},
+   _N = Elm.Native,
+   _U = _N.Utils.make(_elm),
+   _L = _N.List.make(_elm),
+   $moduleName = "Cream",
+   $Basics = Elm.Basics.make(_elm),
+   $Char = Elm.Char.make(_elm),
+   $Html = Elm.Html.make(_elm),
+   $Html$Attributes = Elm.Html.Attributes.make(_elm),
+   $Html$Events = Elm.Html.Events.make(_elm),
+   $Http = Elm.Http.make(_elm),
+   $Json$Decode = Elm.Json.Decode.make(_elm),
+   $List = Elm.List.make(_elm),
+   $Maybe = Elm.Maybe.make(_elm),
+   $Result = Elm.Result.make(_elm),
+   $Signal = Elm.Signal.make(_elm),
+   $String = Elm.String.make(_elm),
+   $Task = Elm.Task.make(_elm);
+   var contacts = function () {
+      var contact = A4($Json$Decode.object3,
+      F3(function (first_name,
+      last_name,
+      email) {
+         return A2($Basics._op["++"],
+         first_name,
+         A2($Basics._op["++"],
+         " ",
+         A2($Basics._op["++"],
+         last_name,
+         A2($Basics._op["++"],
+         " (",
+         A2($Basics._op["++"],
+         email,
+         ")")))));
+      }),
+      A2($Json$Decode._op[":="],
+      "first_name",
+      $Json$Decode.string),
+      A2($Json$Decode._op[":="],
+      "last_name",
+      $Json$Decode.string),
+      A2($Json$Decode._op[":="],
+      "email",
+      $Json$Decode.string));
+      return A2($Json$Decode._op[":="],
+      "data",
+      $Json$Decode.list(contact));
+   }();
+   var lookupContact = function (query) {
+      return function () {
+         var toUrl = true ? $Task.succeed("http://localhost:4000/api/contacts") : $Task.fail("Give me a valid contact ID!");
+         return A2($Task.andThen,
+         toUrl,
+         function ($) {
+            return $Task.mapError($Basics.always("Not found :("))($Http.get(contacts)($));
+         });
+      }();
+   };
+   var places = function () {
+      var place = A3($Json$Decode.object2,
+      F2(function (city,state) {
+         return A2($Basics._op["++"],
+         city,
+         A2($Basics._op["++"],
+         ", ",
+         state));
+      }),
+      A2($Json$Decode._op[":="],
+      "place name",
+      $Json$Decode.string),
+      A2($Json$Decode._op[":="],
+      "state",
+      $Json$Decode.string));
+      return A2($Json$Decode._op[":="],
+      "places",
+      $Json$Decode.list(place));
+   }();
+   var lookupZipCode = function (query) {
+      return function () {
+         var toUrl = _U.eq($String.length(query),
+         5) && A2($String.all,
+         $Char.isDigit,
+         query) ? $Task.succeed(A2($Basics._op["++"],
+         "http://api.zippopotam.us/us/",
+         query)) : $Task.fail("Give me a valid US zip code!");
+         return A2($Task.andThen,
+         toUrl,
+         function ($) {
+            return $Task.mapError($Basics.always("Not found :("))($Http.get(places)($));
+         });
+      }();
+   };
+   var results = $Signal.mailbox($Result.Err("A valid US zip code is 5 numbers."));
+   var query = $Signal.mailbox("");
+   var requests = Elm.Native.Task.make(_elm).performSignal("requests",
+   $Signal.map(function (task) {
+      return A2($Task.andThen,
+      $Task.toResult(task),
+      $Signal.send(results.address));
+   })(A2($Signal.map,
+   lookupContact,
+   query.signal)));
+   var myStyle = $Html$Attributes.style(_L.fromArray([{ctor: "_Tuple2"
+                                                      ,_0: "width"
+                                                      ,_1: "100%"}
+                                                     ,{ctor: "_Tuple2"
+                                                      ,_0: "height"
+                                                      ,_1: "40px"}
+                                                     ,{ctor: "_Tuple2"
+                                                      ,_0: "padding"
+                                                      ,_1: "10px 0"}
+                                                     ,{ctor: "_Tuple2"
+                                                      ,_0: "font-size"
+                                                      ,_1: "2em"}
+                                                     ,{ctor: "_Tuple2"
+                                                      ,_0: "text-align"
+                                                      ,_1: "center"}]));
+   var view = F2(function (string,
+   result) {
+      return function () {
+         var messages = function () {
+            switch (result.ctor)
+            {case "Err":
+               return _L.fromArray([A2($Html.div,
+                 _L.fromArray([myStyle]),
+                 _L.fromArray([$Html.text(result._0)]))]);
+               case "Ok": return A2($List.map,
+                 function (city) {
+                    return A2($Html.div,
+                    _L.fromArray([myStyle]),
+                    _L.fromArray([$Html.text(city)]));
+                 },
+                 result._0);}
+            _U.badCase($moduleName,
+            "between lines 27 and 33");
+         }();
+         var field = A2($Html.input,
+         _L.fromArray([$Html$Attributes.placeholder("Contact ID")
+                      ,$Html$Attributes.value(string)
+                      ,A3($Html$Events.on,
+                      "input",
+                      $Html$Events.targetValue,
+                      $Signal.message(query.address))
+                      ,myStyle]),
+         _L.fromArray([]));
+         return A2($Html.div,
+         _L.fromArray([]),
+         A2($List._op["::"],
+         field,
+         messages));
+      }();
+   });
+   var main = A3($Signal.map2,
+   view,
+   query.signal,
+   results.signal);
+   _elm.Cream.values = {_op: _op
+                       ,view: view
+                       ,myStyle: myStyle
+                       ,main: main
+                       ,query: query
+                       ,results: results
+                       ,lookupZipCode: lookupZipCode
+                       ,places: places
+                       ,lookupContact: lookupContact
+                       ,contacts: contacts};
+   return _elm.Cream.values;
+};
