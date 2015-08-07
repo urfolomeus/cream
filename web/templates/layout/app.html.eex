@@ -14,7 +14,6 @@
   <body>
     <script src="<%= static_path(@conn, "/js/app.js") %>"></script>
 
-    <script>require("web/static/js/app")</script>
     <script>var app = Elm.fullscreen(Elm.Cream);</script>
   </body>
 </html>

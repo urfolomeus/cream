@@ -10,7 +10,6 @@ Elm.Cream.make = function (_elm) {
    _L = _N.List.make(_elm),
    $moduleName = "Cream",
    $Basics = Elm.Basics.make(_elm),
-   $Char = Elm.Char.make(_elm),
    $Html = Elm.Html.make(_elm),
    $Html$Attributes = Elm.Html.Attributes.make(_elm),
    $Html$Events = Elm.Html.Events.make(_elm),
@@ -20,7 +19,6 @@ Elm.Cream.make = function (_elm) {
    $Maybe = Elm.Maybe.make(_elm),
    $Result = Elm.Result.make(_elm),
    $Signal = Elm.Signal.make(_elm),
-   $String = Elm.String.make(_elm),
    $Task = Elm.Task.make(_elm);
    var contacts = function () {
       var contact = A4($Json$Decode.object3,
@@ -59,40 +57,6 @@ Elm.Cream.make = function (_elm) {
          toUrl,
          function ($) {
             return $Task.mapError($Basics.always("Not found :("))($Http.get(contacts)($));
-         });
-      }();
-   };
-   var places = function () {
-      var place = A3($Json$Decode.object2,
-      F2(function (city,state) {
-         return A2($Basics._op["++"],
-         city,
-         A2($Basics._op["++"],
-         ", ",
-         state));
-      }),
-      A2($Json$Decode._op[":="],
-      "place name",
-      $Json$Decode.string),
-      A2($Json$Decode._op[":="],
-      "state",
-      $Json$Decode.string));
-      return A2($Json$Decode._op[":="],
-      "places",
-      $Json$Decode.list(place));
-   }();
-   var lookupZipCode = function (query) {
-      return function () {
-         var toUrl = _U.eq($String.length(query),
-         5) && A2($String.all,
-         $Char.isDigit,
-         query) ? $Task.succeed(A2($Basics._op["++"],
-         "http://api.zippopotam.us/us/",
-         query)) : $Task.fail("Give me a valid US zip code!");
-         return A2($Task.andThen,
-         toUrl,
-         function ($) {
-            return $Task.mapError($Basics.always("Not found :("))($Http.get(places)($));
          });
       }();
    };
@@ -166,8 +130,6 @@ Elm.Cream.make = function (_elm) {
                        ,main: main
                        ,query: query
                        ,results: results
-                       ,lookupZipCode: lookupZipCode
-                       ,places: places
                        ,lookupContact: lookupContact
                        ,contacts: contacts};
    return _elm.Cream.values;

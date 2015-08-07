@@ -4,7 +4,7 @@ exports.config = {
     javascripts: {
       joinTo: {
         'js/app.js': /^(web\/static)/
-      }
+      },
       // To use a separate vendor.js bundle, specify two files path
       // https://github.com/brunch/brunch/blob/stable/docs/config.md#files
       // joinTo: {
@@ -14,12 +14,12 @@ exports.config = {
       //
       // To change the order of concatenation of files, explictly mention here
       // https://github.com/brunch/brunch/tree/master/docs#concatenation
-      // order: {
-      //   before: [
-      //     'web/static/vendor/js/jquery-2.1.1.js',
-      //     'web/static/vendor/js/bootstrap.min.js'
-      //   ]
-      // }
+      order: {
+        before: [
+          'elm/cream-elm/Cream.elm',
+          'web/static/**/*'
+        ]
+      }
     },
     stylesheets: {
       joinTo: 'css/app.css'
@@ -39,7 +39,7 @@ exports.config = {
   // Phoenix paths configuration
   paths: {
     // Which directories to watch
-    watched: ["web/static", "test/static", "elm/cream-elm/"],
+    watched: ["web/static", "test/static", "elm/cream-elm/Cream.elm"],
 
     // Where to compile files to
     public: "priv/static"
@@ -55,9 +55,10 @@ exports.config = {
     elmBrunch: {
       // Set to the elm file(s) containing your "main" function
       // `elm make` handles all elm dependencies
-      mainModules: ['elm/cream-elm/Cream.elm']
+      elmFolder: 'elm/cream-elm',
+      mainModules: ['Cream.elm'],
       // Defaults to 'js/' folder in paths.public
-      // outputFolder: 'some/path/'
+      outputFolder: '../../web/static/vendor'
     }
   },
   npm: {
