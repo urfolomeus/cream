@@ -2,7 +2,9 @@ exports.config = {
   // See http://brunch.io/#documentation for docs.
   files: {
     javascripts: {
-      joinTo: 'js/app.js'
+      joinTo: {
+        'js/app.js': /^(web\/static)/
+      }
       // To use a separate vendor.js bundle, specify two files path
       // https://github.com/brunch/brunch/blob/stable/docs/config.md#files
       // joinTo: {
@@ -37,7 +39,7 @@ exports.config = {
   // Phoenix paths configuration
   paths: {
     // Which directories to watch
-    watched: ["web/static", "test/static"],
+    watched: ["web/static", "test/static", "elm/cream-elm/"],
 
     // Where to compile files to
     public: "priv/static"
@@ -48,6 +50,14 @@ exports.config = {
     babel: {
       // Do not use ES6 compiler in vendor code
       ignore: [/^(web\/static\/vendor)/]
+    },
+
+    elmBrunch: {
+      // Set to the elm file(s) containing your "main" function
+      // `elm make` handles all elm dependencies
+      mainModules: ['elm/cream-elm/Cream.elm']
+      // Defaults to 'js/' folder in paths.public
+      // outputFolder: 'some/path/'
     }
   },
   npm: {

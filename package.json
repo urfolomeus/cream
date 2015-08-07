@@ -5,6 +5,7 @@
     "brunch": "^1.8.3",
     "clean-css-brunch": ">= 1.0 < 1.8",
     "css-brunch": ">= 1.0 < 1.8",
+    "elm-brunch": "^0.2.0",
     "javascript-brunch": ">= 1.0 < 1.8",
     "sass-brunch": "^1.8.10",
     "uglify-js-brunch": ">= 1.0 < 1.8"
